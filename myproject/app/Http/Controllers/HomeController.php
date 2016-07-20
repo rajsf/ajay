@@ -36,7 +36,12 @@ class HomeController extends Controller {
 	 */
 	public function index()
 	{
-		return view('home');
+		//return view('home');
+
+		$hotels = DB::table('hotel')->get();
+
+		//echo "========>>>> <pre>"; print_r($hotels); exit;
+		return view('home')->with('hotel_list', $hotels);
 	}
 
 	public function addHotel()
@@ -65,7 +70,9 @@ class HomeController extends Controller {
 		$data['name'] = Input::get('name');
 		$data['hotel_id'] = Input::get('hotelid');
 		$data['user_id'] = Auth::user()->id;
+		$hotelID = Input::get('hotelid');
 		DB::table('comments')->insert($data);
+		return redirect("addcomments/$hotelID")->with('message', 'Commet Added!');
 	}
 
 	public function postHotel()
@@ -74,7 +81,6 @@ class HomeController extends Controller {
 		$data['name'] = Input::get('name');
 		DB::table('hotel')->insert($data);
 
-		Session::flash('message', 'Successfully created nerd!');
 		return redirect('/admin')->with('message', 'Hotel Added!');
 	}
 
