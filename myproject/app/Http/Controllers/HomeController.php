@@ -52,7 +52,10 @@ class HomeController extends Controller {
 		if ( $user_id == 1 ) {
 			return view('addhotel');	
 		} else {
-			return view('home');	
+			$hotels = DB::table('hotel')->get();
+
+			//echo "========>>>> <pre>"; print_r($hotels); exit;
+			return view('home')->with('hotel_list', $hotels);
 		}
 		
 	}
